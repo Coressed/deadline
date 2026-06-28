@@ -165,7 +165,7 @@ function CustomCam.new(get_head_cframe)
 		rollStiffness = ROLL_STIFFNESS,
 
 		-- Key bind group
-		_inputGroup = _ClientInputGroup.new(),
+		_inputGroup = ClientInputGroup.new(),
 	}
 
 	setmetatable(self, CustomCam)
@@ -181,20 +181,20 @@ function CustomCam:_bindKeys()
 	local ig = self._inputGroup
 
 	-- Roll (Z = left, C = right)
-	ig:bind_user_setting(function() self._rollInput = -1 end, _InputType.Began, "lean_left")
-	ig:bind_user_setting(function() self._rollInput = 0 end,  _InputType.Ended, "lean_left")
-	ig:bind_user_setting(function() self._rollInput = 1 end,  _InputType.Began, "lean_right")
-	ig:bind_user_setting(function() self._rollInput = 0 end,  _InputType.Ended, "lean_right")
+	ig:bind_user_setting(function() self._rollInput = -1 end, InputType.Began, "lean_left")
+	ig:bind_user_setting(function() self._rollInput = 0 end,  InputType.Ended, "lean_left")
+	ig:bind_user_setting(function() self._rollInput = 1 end,  InputType.Began, "lean_right")
+	ig:bind_user_setting(function() self._rollInput = 0 end,  InputType.Ended, "lean_right")
 
 	-- FOV zoom (scroll or keys)
-	ig:bind_key(function() self._fovInput = 1 end,  _InputType.Began, false, Enum.KeyCode.Equals)
-	ig:bind_key(function() self._fovInput = 0 end,  _InputType.Ended, false, Enum.KeyCode.Equals)
-	ig:bind_key(function() self._fovInput = -1 end, _InputType.Began, false, Enum.KeyCode.Minus)
-	ig:bind_key(function() self._fovInput = 0 end,  _InputType.Ended, false, Enum.KeyCode.Minus)
+	ig:bind_key(function() self._fovInput = 1 end,  InputType.Began, false, Enum.KeyCode.Equals)
+	ig:bind_key(function() self._fovInput = 0 end,  InputType.Ended, false, Enum.KeyCode.Equals)
+	ig:bind_key(function() self._fovInput = -1 end, InputType.Began, false, Enum.KeyCode.Minus)
+	ig:bind_key(function() self._fovInput = 0 end,  InputType.Ended, false, Enum.KeyCode.Minus)
 
 	-- Speed modifier (shift = 0.25x)
-	ig:bind_key(function() self._speedMul = 0.25 end, _InputType.Began, false, Enum.KeyCode.LeftShift)
-	ig:bind_key(function() self._speedMul = 1 end,    _InputType.Ended, false, Enum.KeyCode.LeftShift)
+	ig:bind_key(function() self._speedMul = 0.25 end, InputType.Began, false, Enum.KeyCode.LeftShift)
+	ig:bind_key(function() self._speedMul = 1 end,    InputType.Ended, false, Enum.KeyCode.LeftShift)
 end
 
 ------------------------------------------------------------------------
@@ -227,9 +227,9 @@ function CustomCam:update(delta_time)
 	local dt = delta_time
 
 	-- Read mouse input from framework (with safety fallback)
-	local mouse_delta = (_input.get_mouse_delta and _input.get_mouse_delta() or Vector2.new())
+	local mouse_delta = (input.get_mouse_delta and input.get_mouse_delta() or Vector2.new())
 		* MOUSE_SENS_SCALE
-		* (_input.get_mouse_sensitivity and _input.get_mouse_sensitivity() or 1)
+		* (input.get_mouse_sensitivity and input.get_mouse_sensitivity() or 1)
 
 	-- Build raw input vectors from framework-injected self.input
 	-- self.input is overwritten each frame by the framework, but we
@@ -306,4 +306,4 @@ end
 ------------------------------------------------------------------------
 -- Register with the framework (no module return)
 ------------------------------------------------------------------------
-_register_camera_mode("CustomCam", CustomCam)
+register_camera_mode("CustomCam", CustomCam)
